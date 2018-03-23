@@ -1,0 +1,8 @@
+- Excel:
+    - [x] get all sheetnames
+    - [x] get row number and column number
+- File:
+    - copy
+    - move
+    - delete
+    - new

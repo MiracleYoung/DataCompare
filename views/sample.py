@@ -25,7 +25,7 @@ excel_name = settings.SRC_DATA['a.xlsx']
 
 excel = Excel(excel_name)
 
-excel.get_columns('CAPS Industry KPIs New', 'A1', 'F28')
+excel.get_column_names('CAPS Industry KPIs New', 'A1', 'F28')
 # get all sheetname
 excel.read_excel_by_pos('CAPS Industry KPIs New', 'A1', 'F28')
 

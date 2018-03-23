@@ -24,7 +24,19 @@ class Excel:
     def get_sheet(self, sheetname):
         return self._wb[sheetname]
 
-    def get_columns(self, sheetname, start, end, mapping=None):
+    def get_all_sheetnames(self):
+        return self._wb.get_sheet_names()
+
+    def get_max_row(self, sheetname):
+        return self.get_sheet(sheetname).max_row
+
+    def get_max_column(self, sheetname):
+        return self.get_sheet(sheetname).max_column
+
+    def get_dimensions(self, sheetname):
+        return self.get_sheet(sheetname).dimensions.split(':')
+
+    def get_column_names(self, sheetname, start, end, mapping=None):
         _sheet = self.get_sheet(sheetname)
         if mapping:
             _columns = ['[{}]'.format(mapping.get(_column.value)) for _column in _sheet[start:end][0]]
@@ -43,7 +55,7 @@ class Excel:
         try:
             _sheet = self.get_sheet(sheetname)
             _sflogger.debug('Load <{}>[{}][{}] starting...'.format(sheetname, start, end))
-            _columns = self.get_columns(sheetname, start, end, mapping)
+            _columns = self.get_column_names(sheetname, start, end, mapping)
             _sflogger.debug('columns: {}'.format(_columns))
             _table_raw = _sheet[start: end][1:]
             _sflogger.debug('Load [{}].[{}] start...'.format(schema, table))
@@ -51,13 +63,14 @@ class Excel:
         except Exception as e:
             _sflogger.error('Execute failed.', exc_info=True)
 
-    def read_excel_by_pos(self, sheetname, start, end, mapping=None):
+    def read_excel_by_pos(self, sheetname, start=None, end=None, mapping=None):
         try:
+            _start, _end = start, end if start and end else self.get_dimensions(sheetname)
             _sheet = self.get_sheet(sheetname)
-            _sflogger.debug('Read {}{}{}: starting...'.format(sheetname, start, end))
-            _columns = self.get_columns(sheetname, start, end, mapping)
+            _sflogger.debug('Read {}{}{}: starting...'.format(sheetname, _start, _end))
+            _columns = self.get_column_names(sheetname, _start, _end, mapping)
             _sflogger.debug('columns: {}'.format(_columns))
-            _table_raw = _sheet[start: end][1:]
+            _table_raw = _sheet[_start: _end][1:]
             _ret = []
             for _i, _row in enumerate(_table_raw):
                 _value = tuple([_v.value for _v in _row])
