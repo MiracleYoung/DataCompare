@@ -10,10 +10,10 @@
 1. Begin project.
 
 ## MEMBERs
-Yang Liu (US - Advisory): liu.y.yang@pwc.com
+Yang Liu: 223296@qq.com
 
-Longquan Liu (US - Advisory): joe.l.liu@pwc.com
+Longquan Liu: lq6414@aliyun.com
 
-Meihua Wang (US - Advisory): alexandra.x.wang@pwc.com
+Meihua Wang: wangmeihua2003@126.com
 
-Miracle Yang (US - Advisory): miracle.q.yang@pwc.com
+Miracle Yang: miracleyoung0723@gmail.com
