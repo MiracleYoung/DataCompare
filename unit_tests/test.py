@@ -47,4 +47,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    from lib.excel import Excel
+    from utils import settings
+    for path, sheetnames in settings.SRC_DATA.items():
+
+        excel = Excel(path)
+        a, b = excel.get_dimensions()

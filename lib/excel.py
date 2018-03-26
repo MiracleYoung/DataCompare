@@ -8,7 +8,6 @@ from openpyxl import load_workbook
 from functools import wraps
 
 from lib.logger import StreamFileLogger
-from lib.handles import DBHandle
 from utils import settings
 
 _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()
@@ -38,7 +37,7 @@ class Excel:
         return self.get_sheet(sheetname).dimensions.split(':')
 
     def get_column_names(self, sheetname, start=None, end=None, mapping=None):
-        _start, _end = start, end if start and end else self.get_dimensions(sheetname)
+        [_start, _end] = [start, end] if start and end else self.get_dimensions(sheetname)
         _sheet = self.get_sheet(sheetname)
         if mapping:
             _columns = [mapping.get(_column.value) for _column in _sheet[_start:_end][0]]
@@ -48,7 +47,7 @@ class Excel:
 
     def read_excel_by_pos(self, sheetname, start=None, end=None, mapping=None):
         try:
-            _start, _end = start, end if start and end else self.get_dimensions(sheetname)
+            [_start, _end] = [start, end] if start and end else self.get_dimensions(sheetname)
             _sheet = self.get_sheet(sheetname)
             _sflogger.debug('Read {}{}{}: starting...'.format(sheetname, _start, _end))
             _columns = self.get_column_names(sheetname, _start, _end, mapping)
