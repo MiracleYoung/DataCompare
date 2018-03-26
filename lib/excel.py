@@ -41,30 +41,10 @@ class Excel:
         _start, _end = start, end if start and end else self.get_dimensions(sheetname)
         _sheet = self.get_sheet(sheetname)
         if mapping:
-            _columns = ['[{}]'.format(mapping.get(_column.value)) for _column in _sheet[_start:_end][0]]
+            _columns = [mapping.get(_column.value) for _column in _sheet[_start:_end][0]]
         else:
-            _columns = ['[{}]'.format(_column.value) for _column in _sheet[_start:_end][0]]
+            _columns = [_column.value for _column in _sheet[_start:_end][0]]
         return _columns
-
-    def excel2db(self, conn, schema, table, sheetname, start=None, end=None, mapping=None, size=100, **kwargs):
-        '''
-        load data from excel to db
-        :param start, end: excel start pos, end pos
-        :example: start='A1', end='Q5'
-        '''
-        _start, _end = start, end if start and end else self.get_dimensions(sheetname)
-        _custom_columns = kwargs.get('custom_columns', None)
-        _custom_values = kwargs.get('_custom_values', None)
-        try:
-            _sheet = self.get_sheet(sheetname)
-            _sflogger.debug('Load <{}>[{}][{}] starting...'.format(sheetname, _start, _end))
-            _columns = self.get_column_names(sheetname, _start, _end, mapping)
-            _sflogger.debug('columns: {}'.format(_columns))
-            _table_raw = _sheet[_start: _end][1:]
-            _sflogger.debug('Load [{}].[{}] start...'.format(schema, table))
-            DBHandle.bulk_insert(conn, schema, table, _columns, _table_raw, _custom_columns, _custom_values, size)
-        except Exception as e:
-            _sflogger.error('Execute failed.', exc_info=True)
 
     def read_excel_by_pos(self, sheetname, start=None, end=None, mapping=None):
         try:
