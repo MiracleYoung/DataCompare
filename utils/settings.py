@@ -17,9 +17,9 @@ FILE_LOG_LEVEL = logging.DEBUG
 EXCEL_PATH = PROJECT_BASE_DIR / 'src_data'
 
 SRC_DATA = {
-    (EXCEL_PATH / 'CAPS.xlsx').as_posix(): ['CAPS Industry KPIs New', ],
+    (EXCEL_PATH / 'CAPS.xlsx').as_posix(): 'CAPS Industry KPIs New',
 }
 
 TGT_DATA = {
-    (EXCEL_PATH / 'TGT_CAPS.xlsx').as_posix(): ['CAPS Industry KPIs New', ],
+    (EXCEL_PATH / 'TGT_CAPS.xlsx').as_posix(): 'CAPS Industry KPIs New',
 }
