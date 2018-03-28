@@ -40,20 +40,23 @@ class Excel:
         [_start, _end] = [start, end] if start and end else self.get_dimensions(sheetname)
         _sheet = self.get_sheet(sheetname)
         if mapping:
-            _columns = [mapping.get(_column.value) for _column in _sheet[_start:_end][0]]
+            _columns = [mapping.get(_column.value) for _i, _column in enumerate(_sheet.rows) if]
         else:
             _columns = [_column.value for _column in _sheet[_start:_end][0]]
         return _columns
 
-    def get_column(self, sheetname, column_name):
-        _pos = ''
+    def convert_col2header(self, sheetname, column_name):
         _sheet = self.get_sheet(sheetname)
         for _row in _sheet.rows:
             for _j, _cell in enumerate(_row):
                 if _cell.value.upper() == column_name.upper():
-                    _pos = _cell.column
-                    break
+                    return _cell.column
             break
+        return ''
+
+    def get_column(self, sheetname, column_name):
+        _sheet = self.get_sheet(sheetname)
+        _pos = self.convert_col2header(sheetname, column_name)
         return _sheet[_pos] if _pos else []
 
     def read_excel_by_pos(self, sheetname, start=None, end=None, mapping=None):
