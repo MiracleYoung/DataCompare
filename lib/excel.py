@@ -45,19 +45,16 @@ class Excel:
             _columns = [_column.value for _column in _sheet[_start:_end][0]]
         return _columns
 
-    def get_column(self, sheet, column_name):
+    def get_column(self, sheetname, column_name):
         _pos = ''
-        for _row in sheet.rows:
+        _sheet = self.get_sheet(sheetname)
+        for _row in _sheet.rows:
             for _j, _cell in enumerate(_row):
                 if _cell.value.upper() == column_name.upper():
                     _pos = _cell.column
                     break
             break
-        return sheet[_pos] if _pos else []
-
-
-
-
+        return _sheet[_pos] if _pos else []
 
     def read_excel_by_pos(self, sheetname, start=None, end=None, mapping=None):
         try:
@@ -78,5 +75,3 @@ class Excel:
         except Exception as e:
             _sflogger.error('Execute failed.', exc_info=True)
             return []
-
-

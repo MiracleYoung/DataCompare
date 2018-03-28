@@ -53,6 +53,6 @@ if __name__ == '__main__':
 
         excel = Excel(path)
         sheet = excel.get_sheet(sheetnames[0])
-        for _column in sheet.columns:
+        for _i, _row in enumerate(sheet.rows):
             _t = excel.get_column(sheet, 'Year')
             print(1)

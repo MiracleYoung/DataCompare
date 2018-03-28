@@ -16,6 +16,8 @@ FILE_LOG_LEVEL = logging.DEBUG
 
 EXCEL_PATH = PROJECT_BASE_DIR / 'src_data'
 
+# key: excel path
+# value: [sheetname1, sheetname2, ...]
 SRC_DATA = {
     (EXCEL_PATH / 'CAPS.xlsx').as_posix(): ['CAPS Industry KPIs New', ],
 }
