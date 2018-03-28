@@ -12,7 +12,7 @@
 ## MEMBERs
 Yang Liu: 223296@qq.com
 
-Longquan Liu: lq6414@aliyun.com
+Longquan Liu: lq6414
 
 Meihua Wang: wangmeihua2003@126.com
 

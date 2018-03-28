@@ -52,4 +52,7 @@ if __name__ == '__main__':
     for path, sheetnames in settings.SRC_DATA.items():
 
         excel = Excel(path)
-        a, b = excel.get_dimensions()
+        sheet = excel.get_sheet(sheetnames[0])
+        for _column in sheet.columns:
+            _t = excel.get_column(sheet, 'Year')
+            print(1)
