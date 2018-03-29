@@ -40,7 +40,7 @@ class Excel:
         [_start, _end] = [start, end] if start and end else self.get_dimensions(sheetname)
         _sheet = self.get_sheet(sheetname)
         if mapping:
-            _columns = [mapping.get(_column.value) for _i, _column in enumerate(_sheet.rows) if]
+            _columns = [mapping.get(_column.value) for _i, _column in enumerate(_sheet.rows) ]
         else:
             _columns = [_column.value for _column in _sheet[_start:_end][0]]
         return _columns
