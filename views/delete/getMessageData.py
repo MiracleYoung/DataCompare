@@ -17,7 +17,7 @@ def get_data_message(path,sheetname):
     else:
         ''
     _cursheet = _excel.get_sheet(sheetname)
-    print(_cursheet.max_row)
+
     _alldata = []
     for _row in range(2, _cursheet.max_row):
         _rowdata = []
@@ -28,10 +28,7 @@ def get_data_message(path,sheetname):
         _alldata.append(_rowdata)
     _list_dict_output =[]
     for _item in _alldata:
-        _getcount = 0
-        for _count in _alldata:
-            if _item == _count:
-                _getcount = _getcount+1
+        _getcount = _alldata.count(_item)
         _dictitem ={'rowdata':_item,'count':_getcount}
         _list_dict_output.append(_dictitem)
     _sflogger.debug('matchedData: {}'.format(_list_dict_output))
