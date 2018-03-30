@@ -3,9 +3,12 @@ from utils import settings
 from lib.logger import StreamFileLogger
 
 _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()
-def get_match_columns(srcpath,tgtpath,sheetname):
-    _srcexcel = Excel(srcpath)
-    _tgtexcel = Excel(tgtpath)
+
+def get_match_columns(sheetname):
+    _srcpath = settings.SRC_FILE_PATH
+    _tgtpath = settings.TGT_FILE_PATH
+    _srcexcel = Excel(_srcpath)
+    _tgtexcel = Excel(_tgtpath)
     _srccolumn =_srcexcel.get_column_names(sheetname)
     _tgtcolumn =_tgtexcel.get_column_names(sheetname)
     _matchcolumn = []
@@ -16,9 +19,9 @@ def get_match_columns(srcpath,tgtpath,sheetname):
     _sflogger.debug('matched column: {}'.format(_matchcolumn))
     return _matchcolumn
 
-def get_del_columns(path,sheetname):
-
-    _srcexcel = Excel(path)
+def get_del_columns(sheetname):
+    _path = settings.SRC_FILE_PATH
+    _srcexcel = Excel(_path)
     _srccolumn = _srcexcel.get_column_names(sheetname)
     _match_columns = get_match_columns(sheetname)
     for _item in _match_columns:
@@ -27,8 +30,9 @@ def get_del_columns(path,sheetname):
     _sflogger.debug('deleted column: {}'.format(_srccolumn))
     return _srccolumn
 
-def get_add_columns(path,sheetname):
-    _tgtexcel = Excel(path)
+def get_add_columns(sheetname):
+    _path = settings.TGT_FILE_PATH
+    _tgtexcel = Excel(_path)
     _tgtcolumn = _tgtexcel.get_column_names(sheetname)
     _match_columns = get_match_columns(sheetname)
     for _item in _match_columns:
