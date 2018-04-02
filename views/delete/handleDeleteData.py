@@ -22,6 +22,7 @@ def setBgColor(sheetname):
     _getSetList = get_diff_rowdata(sheetname)
     _filepath = settings.END_FILE_PATH
     _excel = Excel(_filepath)
+    _wb = _excel.get_wb()
     _ws = _excel.get_sheet(sheetname)
     for curitem in _ws.iter_rows():
 
@@ -30,6 +31,6 @@ def setBgColor(sheetname):
             print(curitem[0].row)
             for cell in curitem:
                 cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
-
+    _wb.save(settings.END_FILE_PATH)
 
 setBgColor('CAPS Industry KPIs New')
