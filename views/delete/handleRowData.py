@@ -9,8 +9,9 @@ def get_diff_rowdata(sheetname):
     _tgtpath = settings.TGT_FILE_PATH
     _srcData = getMsgData.get_data_message(_srcpath,sheetname)
     _tgtData = getMsgData.get_data_message(_tgtpath,sheetname)
+
     _numlist = []
-    lineNum = 1
+    lineNum = 2
     for _tgtitem in _tgtData:
         if (_tgtitem not in _srcData):
             _numlist.append(lineNum)
@@ -20,7 +21,7 @@ def get_diff_rowdata(sheetname):
 
 def setBgColor(sheetname):
     _getSetList = get_diff_rowdata(sheetname)
-    _filepath = settings.END_FILE_PATH
+    _filepath = settings.TGT_FILE_PATH
     _excel = Excel(_filepath)
     _wb = _excel.get_wb()
     _ws = _excel.get_sheet(sheetname)
@@ -31,4 +32,4 @@ def setBgColor(sheetname):
                 cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
     _wb.save(settings.END_FILE_PATH)
 
-# setBgColor('CAPS Industry KPIs New')
+setBgColor('CAPS Industry KPIs New')

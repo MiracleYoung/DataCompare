@@ -13,7 +13,7 @@ def get_match_columns(sheetname):
     _tgtcolumn =_tgtexcel.get_column_names(sheetname)
     _matchcolumn = []
     for _item in _srccolumn:
-        if _item in _tgtcolumn:
+        if _item in _tgtcolumn and _item is not None:
             _matchcolumn.append(_item)
 
     _sflogger.info('matched column: {}'.format(_matchcolumn))
@@ -25,7 +25,7 @@ def get_del_columns(sheetname):
     _srccolumn = _srcexcel.get_column_names(sheetname)
     _match_columns = get_match_columns(sheetname)
     for _item in _match_columns:
-        if _item in _srccolumn:
+        if _item in _srccolumn and _item is not None:
             _srccolumn.remove(_item)
     _sflogger.info('deleted column: {}'.format(_srccolumn))
     return _srccolumn
@@ -36,7 +36,7 @@ def get_add_columns(sheetname):
     _tgtcolumn = _tgtexcel.get_column_names(sheetname)
     _match_columns = get_match_columns(sheetname)
     for _item in _match_columns:
-        if _item in _tgtcolumn:
+        if _item in _tgtcolumn and _item is not None:
             _tgtcolumn.remove(_item)
     _sflogger.info('added column: {}'.format(_tgtcolumn))
     return  _tgtcolumn
