@@ -31,4 +31,4 @@ def setBgColor(sheetname):
                 cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
     _wb.save(settings.END_FILE_PATH)
 
-setBgColor('CAPS Industry KPIs New')
+# setBgColor('CAPS Industry KPIs New')
