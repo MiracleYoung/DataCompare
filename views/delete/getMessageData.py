@@ -19,7 +19,7 @@ def get_data_message(path,sheetname):
 
     _alldata = []
 
-    for _row in range(2, _cursheet.max_row+1):
+    for _row in range(1, _cursheet.max_row+1):
         _rowdata = []
         for _column in _headername:
             _cellname = "{}{}".format(_column, _row)
@@ -30,6 +30,7 @@ def get_data_message(path,sheetname):
     for _item in _alldata:
         _getcount = _alldata.count(_item)
         _item.append(_getcount)
-
+    print(_alldata)
     return _alldata
 
+# get_data_message(path = 'C:/Users/jliu409/DataCompare/src_data/CAPS.xlsx',sheetname = 'CAPS Industry KPIs New')

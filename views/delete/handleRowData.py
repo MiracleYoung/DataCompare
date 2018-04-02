@@ -10,7 +10,7 @@ def get_diff_rowdata(sheetname):
     _srcData = getMsgData.get_data_message(_srcpath,sheetname)
     _tgtData = getMsgData.get_data_message(_tgtpath,sheetname)
     _numlist = []
-    lineNum = 2
+    lineNum = 1
     for _tgtitem in _tgtData:
         if (_tgtitem not in _srcData):
             _numlist.append(lineNum)
