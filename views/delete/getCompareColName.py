@@ -16,7 +16,7 @@ def get_match_columns(sheetname):
         if _item in _tgtcolumn:
             _matchcolumn.append(_item)
 
-    _sflogger.debug('matched column: {}'.format(_matchcolumn))
+    _sflogger.info('matched column: {}'.format(_matchcolumn))
     return _matchcolumn
 
 def get_del_columns(sheetname):
@@ -27,7 +27,7 @@ def get_del_columns(sheetname):
     for _item in _match_columns:
         if _item in _srccolumn:
             _srccolumn.remove(_item)
-    _sflogger.debug('deleted column: {}'.format(_srccolumn))
+    _sflogger.info('deleted column: {}'.format(_srccolumn))
     return _srccolumn
 
 def get_add_columns(sheetname):
@@ -38,10 +38,5 @@ def get_add_columns(sheetname):
     for _item in _match_columns:
         if _item in _tgtcolumn:
             _tgtcolumn.remove(_item)
-    _sflogger.debug('added column: {}'.format(_tgtcolumn))
+    _sflogger.info('added column: {}'.format(_tgtcolumn))
     return  _tgtcolumn
-
-
-
-
-

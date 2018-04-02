@@ -1,4 +1,3 @@
-
 import views.delete.getCompareColName as compareData
 from utils import settings
 from lib.excel import Excel
@@ -19,8 +18,7 @@ def get_data_message(path,sheetname):
     _cursheet = _excel.get_sheet(sheetname)
 
     _alldata = []
-    list_dict_output = []
-    print(_cursheet.max_row)
+
     for _row in range(2, _cursheet.max_row+1):
         _rowdata = []
         for _column in _headername:
@@ -28,11 +26,9 @@ def get_data_message(path,sheetname):
             _cellvalue = _cursheet[_cellname].value
             _rowdata.append(_cellvalue)
         _alldata.append(_rowdata)
-    _list_dict_output =[]
+
     for _item in _alldata:
         _getcount = _alldata.count(_item)
-        _dictitem ={'rowdata':_item,'count':_getcount}
-        list_dict_output.append(_dictitem)
+        _item.append(_getcount)
 
-    print(list_dict_output)
-    _sflogger.debug('matchedData: {}'.format(_list_dict_output))
+    return _alldata
