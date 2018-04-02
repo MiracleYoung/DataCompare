@@ -25,3 +25,10 @@ SRC_DATA = {
 TGT_DATA = {
     (EXCEL_PATH / 'TGT_CAPS.xlsx').as_posix(): ['CAPS Industry KPIs New', ],
 }
+
+SRC_FILE_PATH = (EXCEL_PATH / 'CAPS.xlsx').as_posix()
+
+TGT_FILE_PATH = (EXCEL_PATH / 'TGT_CAPS.xlsx').as_posix()
+
+END_FILE_PATH = (EXCEL_PATH / 'END_CAPS.xlsx').as_posix()
+
