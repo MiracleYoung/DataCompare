@@ -27,8 +27,6 @@ def setBgColor(sheetname):
     for curitem in _ws.iter_rows():
 
         if curitem[0].row in _getSetList:
-
-            print(curitem[0].row)
             for cell in curitem:
                 cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
     _wb.save(settings.END_FILE_PATH)
