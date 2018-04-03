@@ -65,7 +65,7 @@ def highlight_columns(sheetname):
 
     wb.save('new_compare_result.xlsx')
 
-highlight_columns('NKTP')
+#highlight_columns('NKTP')
 
 
 
