@@ -17,6 +17,7 @@ def get_diff_rowdNum(srcexcel,tgtexcel,sheetname,idx=None):
         if (_tgtitem not in _srcData):
             _numlist.append(lineNum)
         lineNum += 1
+    print(_numlist)
     return _numlist
 
 def get_matchIdx_rowdNum(srcexcel,tgtexcel,sheetname,idx=None):
@@ -27,23 +28,29 @@ def get_matchIdx_rowdNum(srcexcel,tgtexcel,sheetname,idx=None):
         _srcData = getMsgData.get_srcdata_message(srcexcel, tgtexcel, sheetname, idx)
         _tgtData = getMsgData.get_tgtdata_message(srcexcel, tgtexcel, sheetname, idx)
 
-    #store match rowNum in target file
-    tgt_numlist = []
-    _tgtlineNum = 2
-    for _tgtitem in _tgtData:
-        if (_tgtitem  in _srcData):
-            tgt_numlist.append(_tgtlineNum)
-        _tgtlineNum += 1
+    #store match rowNum in both file
+    _numlist = []
+    for _i in range(0,len(_srcData)-1):
+        for _j in range(0,len(_tgtData)-1):
+            if _srcData[_i] == _tgtData[_j]:
+                list1 = (str(_i+2)+','+str(_j+2)).split(',')
+                _numlist.append(list1)
+                break
+
+
     # store match rowNum in src file
     _src_numlist = []
-    _srclineNum = 2
-    for _srcitem in _srcData:
-        if (_srcitem in _tgtData):
-            _src_numlist.append(_srclineNum)
-        _srclineNum += 1
-    _compareRowList = list(zip(_src_numlist,tgt_numlist))
-    print(_compareRowList)
-    return _compareRowList
+
+    # for i in range(0,len(_srcData)-1):
+    #     _srclineNum = 2
+    #     for _tgtitem in _tgtData:
+    #         if (_tgtitem == _srcData[i]):
+    #             _src_numlist.append(zip(i+1,_srclineNum))
+    #     _srclineNum += 1
+    #
+    # # _compareRowList = list(zip(_src_numlist,tgt_numlist))
+    print(_numlist)
+    return _numlist
 
 
 def setBgColor(srcexcel,tgtexcel,sheetname):
@@ -64,6 +71,7 @@ def setBgColorIdx(srcexcel,tgtexcel,sheetname,idx):
     # only flag target file
     _srcws = srcexcel.get_sheet(sheetname)
     _getZips= getMsgData.get_compare_colNum(srcexcel,tgtexcel,sheetname,idx)
+    print('loop start')
     #set color in same index but different cell value
     for _row in _getrowsNum:
         for _zip in _getZips:
@@ -76,11 +84,12 @@ def setBgColorIdx(srcexcel,tgtexcel,sheetname,idx):
             _tgtlvalue = str(_tgtlvalue).strip().upper()
             if(_srclvalue !=_tgtlvalue):
                 _ws[_tgtcellname].fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
+
     # set different index ,highlight all cell color
     _getdiffrowsNum = get_diff_rowdNum(srcexcel,tgtexcel,sheetname,idx)
     for curitem in _ws.iter_rows():
 
-        if curitem[0].row in _getdiffrowsNum:
+        if curitem[0].row  in _getdiffrowsNum:
             for cell in curitem:
                 cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
 
@@ -92,7 +101,7 @@ def test():
     _tgtpath = settings.TGT_FILE_PATH
     _srcexcel = Excel(_srcpath)
     _tgtexcel = Excel(_tgtpath)
+    # getMsgData.get_srcdata_message(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
     setBgColorIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
-
 
 test()

@@ -40,6 +40,7 @@ def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
         if _item in _alldata:
             _getcount = _alldata.count(_item)
             _item.append(_getcount)
+    print(_alldata)
     return _alldata
 
 def get_tgtdata_message(srcexcel,tgtexcel,sheetname,idx=None):
@@ -100,11 +101,11 @@ def get_compare_colNum(srcexcel,tgtexcel,sheetname,idx):
     _sheadnum = []
     _theadnum = []
     for _maccol in _matchcolumn:
-        _curshead = srcexcel.convert_col2header(sheetname, _maccol)
-        _sheadnum.append(_curshead)
+        _cursrcshead = srcexcel.convert_col2header(sheetname, _maccol)
+        _sheadnum.append(_cursrcshead)
     for _maccol in _matchcolumn:
-        _curthead = tgtexcel.convert_col2header(sheetname, _maccol)
-        _theadnum.append(_curthead)
+        _curtgtshead = tgtexcel.convert_col2header(sheetname, _maccol)
+        _theadnum.append(_curtgtshead)
     _compareCols = list(zip(_sheadnum, _theadnum))
     print(_compareCols)
     #getcompare row position for both sides
@@ -113,7 +114,7 @@ def get_compare_colNum(srcexcel,tgtexcel,sheetname,idx):
 
 
 
-# get_compare_colNum('CAPS Industry KPIs New','Name')
+# get_srcdata_message('CAPS Industry KPIs New','Name')
 
 # get_compare_colNum('C:/Users/jliu409/DataCompare/src_data/CAPS.xlsx','CAPS Industry KPIs New')
 
