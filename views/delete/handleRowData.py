@@ -4,15 +4,13 @@ from lib.excel import Excel
 from lib.logger import StreamFileLogger
 from openpyxl.styles import PatternFill
 
-def get_diff_rowdNum(sheetname,idx=None):
-    _srcpath = settings.SRC_FILE_PATH
-    _tgtpath = settings.TGT_FILE_PATH
+def get_diff_rowdNum(srcexcel,tgtexcel,sheetname,idx=None):
     if idx is None:
-        _srcData = getMsgData.get_data_message(_srcpath,sheetname)
-        _tgtData = getMsgData.get_data_message(_tgtpath,sheetname)
+        _srcData = getMsgData.get_srcdata_message(srcexcel,tgtexcel,sheetname)
+        _tgtData = getMsgData.get_tgtdata_message(srcexcel,tgtexcel,sheetname)
     else:
-        _srcData = getMsgData.get_data_message(_srcpath, sheetname,idx)
-        _tgtData = getMsgData.get_data_message(_tgtpath, sheetname,idx)
+        _srcData = getMsgData.get_srcdata_message(srcexcel,tgtexcel,sheetname,idx)
+        _tgtData = getMsgData.get_tgtdata_message(srcexcel,tgtexcel,sheetname,idx)
     _numlist = []
     lineNum = 2
     for _tgtitem in _tgtData:
@@ -21,15 +19,13 @@ def get_diff_rowdNum(sheetname,idx=None):
         lineNum += 1
     return _numlist
 
-def get_matchIdx_rowdNum(sheetname,idx=None):
-    _srcpath = settings.SRC_FILE_PATH
-    _tgtpath = settings.TGT_FILE_PATH
+def get_matchIdx_rowdNum(srcexcel,tgtexcel,sheetname,idx=None):
     if idx is None:
-        _srcData = getMsgData.get_data_message(_srcpath,sheetname)
-        _tgtData = getMsgData.get_data_message(_tgtpath,sheetname)
+        _srcData = getMsgData.get_srcdata_message(srcexcel, tgtexcel, sheetname)
+        _tgtData = getMsgData.get_tgtdata_message(srcexcel, tgtexcel, sheetname)
     else:
-        _srcData = getMsgData.get_data_message(_srcpath, sheetname,idx)
-        _tgtData = getMsgData.get_data_message(_tgtpath, sheetname,idx)
+        _srcData = getMsgData.get_srcdata_message(srcexcel, tgtexcel, sheetname, idx)
+        _tgtData = getMsgData.get_tgtdata_message(srcexcel, tgtexcel, sheetname, idx)
 
     #store match rowNum in target file
     tgt_numlist = []
@@ -50,12 +46,10 @@ def get_matchIdx_rowdNum(sheetname,idx=None):
     return _compareRowList
 
 
-def setBgColor(sheetname):
-    _getrowsNum = get_diff_rowdNum(sheetname)
-    _filepath = settings.TGT_FILE_PATH
-    _excel = Excel(_filepath)
-    _wb = _excel.get_wb()
-    _ws = _excel.get_sheet(sheetname)
+def setBgColor(srcexcel,tgtexcel,sheetname):
+    _getrowsNum = get_diff_rowdNum(srcexcel,tgtexcel,sheetname)
+    _wb = tgtexcel.get_wb()
+    _ws = tgtexcel.get_sheet(sheetname)
     for curitem in _ws.iter_rows():
 
         if curitem[0].row in _getrowsNum:
@@ -63,19 +57,13 @@ def setBgColor(sheetname):
                 cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
     _wb.save(settings.END_FILE_PATH)
 
-def setBgColorIdx(sheetname,idx):
-    _getrowsNum = get_matchIdx_rowdNum(sheetname,idx)
-    _filepath = settings.TGT_FILE_PATH
-    _comparepath = settings.SRC_FILE_PATH
-    _excel = Excel(_filepath)
-    _srcexcel = Excel(_comparepath)
-
-    _wb = _excel.get_wb()
-    _ws = _excel.get_sheet(sheetname)
+def setBgColorIdx(srcexcel,tgtexcel,sheetname,idx):
+    _getrowsNum = get_matchIdx_rowdNum(srcexcel,tgtexcel,sheetname,idx)
+    _wb = tgtexcel.get_wb()
+    _ws = tgtexcel.get_sheet(sheetname)
     # only flag target file
-
-    _srcws = _srcexcel.get_sheet(sheetname)
-    _getZips= getMsgData.get_compare_colNum(sheetname,idx)
+    _srcws = srcexcel.get_sheet(sheetname)
+    _getZips= getMsgData.get_compare_colNum(srcexcel,tgtexcel,sheetname,idx)
     #set color in same index but different cell value
     for _row in _getrowsNum:
         for _zip in _getZips:
@@ -84,12 +72,12 @@ def setBgColorIdx(sheetname,idx):
             _tgtcellname = "{}{}".format(_zip[1], _row[1])
             _srclvalue = _srcws[_srccellname].value
             _tgtlvalue = _ws[_tgtcellname].value
-            _srclvalue = str(_srclvalue).upper()
-            _tgtlvalue = str(_tgtlvalue).upper()
+            _srclvalue = str(_srclvalue).strip().upper()
+            _tgtlvalue = str(_tgtlvalue).strip().upper()
             if(_srclvalue !=_tgtlvalue):
                 _ws[_tgtcellname].fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
     # set different index ,highlight all cell color
-    _getdiffrowsNum = get_diff_rowdNum(sheetname,idx)
+    _getdiffrowsNum = get_diff_rowdNum(srcexcel,tgtexcel,sheetname,idx)
     for curitem in _ws.iter_rows():
 
         if curitem[0].row in _getdiffrowsNum:
@@ -99,12 +87,12 @@ def setBgColorIdx(sheetname,idx):
     _wb.save(settings.END_FILE_PATH)
 
 
+def test():
+    _srcpath = settings.SRC_FILE_PATH
+    _tgtpath = settings.TGT_FILE_PATH
+    _srcexcel = Excel(_srcpath)
+    _tgtexcel = Excel(_tgtpath)
+    setBgColorIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
 
 
-
-
-
-
-
-
-setBgColorIdx('CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
+test()
