@@ -4,4 +4,4 @@
 # @Author  : Miracle Young
 # @File    : __init__.py.py
 
-from . import settings
+from utils import settings

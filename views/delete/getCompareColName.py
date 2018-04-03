@@ -47,38 +47,6 @@ def get_add_columns(sheetname):
     _sflogger.info('added column: {}'.format(_tgtcolumn))
     return  _tgtcolumn
 
-def get_compare_colNum(sheetname,idx):
-    _srcpath = settings.SRC_FILE_PATH
-    _tgtpath = settings.TGT_FILE_PATH
-    _srcexcel = Excel(_srcpath)
-    _tgtexcel = Excel(_tgtpath)
-    _srccolumn = _srcexcel.get_column_names(sheetname)
-    _tgtcolumn = _tgtexcel.get_column_names(sheetname)
-
-    #getcompare column position for both sides
-    _matchcolumn = []
-    for _item in _srccolumn:
-        if _item in _tgtcolumn and _item is not None:
-            _matchcolumn.append(_item)
-    for _item in _matchcolumn:
-        if _item in idx:
-            _matchcolumn.remove(_item)
-    _sheadnum = []
-    _theadnum = []
-    for _maccol in _matchcolumn:
-        _curshead = _srcexcel.convert_col2header(sheetname, _maccol)
-        _sheadnum.append(_curshead)
-    for _maccol in _matchcolumn:
-        _curthead = _tgtexcel.convert_col2header(sheetname, _maccol)
-        _theadnum.append(_curthead)
-    _compareColZips = zip(_sheadnum, _theadnum)
-
-    #getcompare row position for both sides
-
-    return _compareColZips
-
-
-
 
 
 # get_compare_colNum('CAPS Industry KPIs New',['Name'])
