@@ -7,28 +7,24 @@ _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()
 def get_data_message(path,sheetname,idx=None):
 
     #initial index into list
+    _headername = []
 
+    #store message data
+    _alldata = []
     _excel = Excel(path)
     if idx is None:
         _mactch_column_name = compareData.get_match_columns(sheetname)
-    else:
-        _indexCols = idx.split(',')
-        _mactch_column_name = compareData.get_match_columns(sheetname, _indexCols)
-
-    _headername = []
-    if idx is  None :
         for columnname in _mactch_column_name:
             _curcells = _excel.convert_col2header(sheetname,columnname)
             _headername.append(_curcells)
-
     else:
+        _indexCols = idx.split(',')
+        _mactch_column_name = compareData.get_match_columns(sheetname, _indexCols)
         for columnname in _indexCols:
-            _curcells = _excel.convert_col2header(sheetname,columnname)
+            _curcells = _excel.convert_col2header(sheetname, columnname)
             _headername.append(_curcells)
 
     _cursheet = _excel.get_sheet(sheetname)
-
-    _alldata = []
 
     for _row in range(2, _cursheet.max_row+1):
         _rowdata = []
@@ -42,14 +38,12 @@ def get_data_message(path,sheetname,idx=None):
             #upper all values
 
         _alldata.append(_rowdata)
-
-    for _item in _alldata:
+    for _item in _alldata[::-1]:
         if _item in _alldata:
             _getcount = _alldata.count(_item)
             _item.append(_getcount)
-    print(_alldata)
     return _alldata
 
-get_data_message('C:/Users/jliu409/DataCompare/src_data/CAPS.xlsx','CAPS Industry KPIs New','Name,Age')
+get_data_message('C:/Users/jliu409/DataCompare/src_data/CAPS.xlsx','CAPS Industry KPIs New')
 
 
