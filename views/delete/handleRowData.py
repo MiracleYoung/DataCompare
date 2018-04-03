@@ -65,7 +65,6 @@ def setBgColor(sheetname):
 
 def setBgColorIdx(sheetname,idx):
     _getrowsNum = get_matchIdx_rowdNum(sheetname,idx)
-    print(_getrowsNum)
     _filepath = settings.TGT_FILE_PATH
     _comparepath = settings.SRC_FILE_PATH
     _excel = Excel(_filepath)
@@ -80,7 +79,7 @@ def setBgColorIdx(sheetname,idx):
     #set color in same index but different cell value
     for _row in _getrowsNum:
         for _zip in _getZips:
-            #getbothCellsName
+            #getbothCellsName _zip[0] is srcrownum,_zip[1] is tgrrownum.row is same
             _srccellname = "{}{}".format(_zip[0], _row[0])
             _tgtcellname = "{}{}".format(_zip[1], _row[1])
             _srclvalue = _srcws[_srccellname].value
@@ -89,7 +88,13 @@ def setBgColorIdx(sheetname,idx):
             _tgtlvalue = str(_tgtlvalue).upper()
             if(_srclvalue !=_tgtlvalue):
                 _ws[_tgtcellname].fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
-        # set different index ,highlight all cell color
+    # set different index ,highlight all cell color
+    _getdiffrowsNum = get_diff_rowdNum(sheetname,idx)
+    for curitem in _ws.iter_rows():
+
+        if curitem[0].row in _getdiffrowsNum:
+            for cell in curitem:
+                cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
 
     _wb.save(settings.END_FILE_PATH)
 
@@ -102,4 +107,4 @@ def setBgColorIdx(sheetname,idx):
 
 
 
-setBgColorIdx('CAPS Industry KPIs New','Name,Age')
+setBgColorIdx('CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
