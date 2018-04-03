@@ -5,54 +5,17 @@
 # @File    : test.py
 
 
-import threading, time, random
-
-queue = []
-
-con = threading.Condition()
-
-class Producer(threading.Thread):
-    def run(self):
-        while True:
-            if con.acquire():
-                if len(queue) > 100:
-                    con.wait()
-                else:
-                    elem = random.randrange(100)
-                    queue.append(elem)
-                    print("Producer a elem {}, Now size is {}".format(elem, len(queue)))
-                    time.sleep(random.random())
-                    con.notify()
-                con.release()
-
-class Consumer(threading.Thread):
-    def run(self):
-        while True:
-            if con.acquire():
-                if len(queue) < 0:
-                    con.wait()
-                else:
-                    elem = queue.pop()
-                    print("Consumer a elem {}. Now size is {}".format(elem, len(queue)))
-                    time.sleep(random.random())
-                    con.notify()
-                con.release()
-
-def main():
-    for i in range(3):
-        Producer().start()
-
-    for i in range(2):
-        Consumer().start()
-
-
 if __name__ == '__main__':
-    from lib.excel import Excel
-    from utils import settings
-    for path, sheetnames in settings.SRC_DATA.items():
+    import argparse
 
-        excel = Excel(path)
-        sheet = excel.get_sheet(sheetnames[0])
-        for _i, _row in enumerate(sheet.rows):
-            _t = excel.get_column(sheet, 'Year')
-            print(1)
+    _desc = '''
+        The sheet name should like "Sheet1,Sheet2,Sheet3", use double quote include sheetnames
+        balabala
+    '''
+    parser = argparse.ArgumentParser(description=_desc)
+    parser.add_argument("--foo-qwe", type=str)
+    parser.add_argument("-v", "--verbosity", dest='verbosity', nargs='?')
+    args = parser.parse_args()
+    print(args)
+    # print(args.qwe)
+    print(args.verbosity)
