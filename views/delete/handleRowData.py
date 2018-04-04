@@ -50,10 +50,11 @@ def setBgColorRow(srcexcel,tgtexcel,sheetname):
 
         if curitem[0].row in _getrowsNum:
             for cell in curitem:
-                cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
+                cell.fill = PatternFill(fgColor = 'EE7600', fill_type = 'solid')
     _wb.save(settings.END_FILE_PATH)
 
 def setBgColorRowIdx(srcexcel,tgtexcel,sheetname,idx):
+    print('compare start.')
     _getrowsNum = get_matchIdx_rowdNum(srcexcel,tgtexcel,sheetname,idx)
     _wb = tgtexcel.get_wb()
     _ws = tgtexcel.get_sheet(sheetname)
@@ -72,7 +73,7 @@ def setBgColorRowIdx(srcexcel,tgtexcel,sheetname,idx):
             _srclvalue = str(_srclvalue).strip().upper()
             _tgtlvalue = str(_tgtlvalue).strip().upper()
             if(_srclvalue !=_tgtlvalue):
-                _ws[_tgtcellname].fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
+                _ws[_tgtcellname].fill = PatternFill(fgColor = 'EE7600', fill_type = 'solid')
 
     # set different index ,highlight all cell color
     _getdiffrowsNum = get_diff_rowdNum(srcexcel,tgtexcel,sheetname,idx)
@@ -80,7 +81,7 @@ def setBgColorRowIdx(srcexcel,tgtexcel,sheetname,idx):
 
         if curitem[0].row  in _getdiffrowsNum:
             for cell in curitem:
-                cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
+                cell.fill = PatternFill(fgColor = 'EEC900', fill_type = 'solid')
 
     #set add columns color
     _addColumn = getColumn.get_add_columns(srcexcel,tgtexcel,sheetname)
@@ -93,9 +94,10 @@ def setBgColorRowIdx(srcexcel,tgtexcel,sheetname,idx):
         for _row in _ws.iter_rows():
             for _cellitem in _row:
                 if _cellitem.column in _addColumn:
-                    _cellitem.fill = PatternFill(fgColor='FF0000', fill_type='solid')
+                    _cellitem.fill = PatternFill(fgColor='87CEEB', fill_type='solid')
 
     _wb.save(settings.END_FILE_PATH)
+    print('save completed.')
 
 
 def test():
@@ -103,7 +105,7 @@ def test():
     _tgtpath = settings.TGT_FILE_PATH
     _srcexcel = Excel(_srcpath)
     _tgtexcel = Excel(_tgtpath)
-    # getMsgData.get_srcdata_message(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
     setBgColorRowIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
 
-test()
+
+
