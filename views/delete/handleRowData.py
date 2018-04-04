@@ -1,4 +1,5 @@
 import views.delete.getMessageData as getMsgData
+import views.delete.getCompareColName as getColumn
 from utils import settings
 from lib.excel import Excel
 from lib.logger import StreamFileLogger
@@ -37,23 +38,11 @@ def get_matchIdx_rowdNum(srcexcel,tgtexcel,sheetname,idx=None):
                 _numlist.append(list1)
                 break
 
-
-    # store match rowNum in src file
-    _src_numlist = []
-
-    # for i in range(0,len(_srcData)-1):
-    #     _srclineNum = 2
-    #     for _tgtitem in _tgtData:
-    #         if (_tgtitem == _srcData[i]):
-    #             _src_numlist.append(zip(i+1,_srclineNum))
-    #     _srclineNum += 1
-    #
-    # # _compareRowList = list(zip(_src_numlist,tgt_numlist))
     print(_numlist)
     return _numlist
 
 
-def setBgColor(srcexcel,tgtexcel,sheetname):
+def setBgColorRow(srcexcel,tgtexcel,sheetname):
     _getrowsNum = get_diff_rowdNum(srcexcel,tgtexcel,sheetname)
     _wb = tgtexcel.get_wb()
     _ws = tgtexcel.get_sheet(sheetname)
@@ -64,7 +53,7 @@ def setBgColor(srcexcel,tgtexcel,sheetname):
                 cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
     _wb.save(settings.END_FILE_PATH)
 
-def setBgColorIdx(srcexcel,tgtexcel,sheetname,idx):
+def setBgColorRowIdx(srcexcel,tgtexcel,sheetname,idx):
     _getrowsNum = get_matchIdx_rowdNum(srcexcel,tgtexcel,sheetname,idx)
     _wb = tgtexcel.get_wb()
     _ws = tgtexcel.get_sheet(sheetname)
@@ -93,6 +82,19 @@ def setBgColorIdx(srcexcel,tgtexcel,sheetname,idx):
             for cell in curitem:
                 cell.fill = PatternFill(fgColor = 'FF0000', fill_type = 'solid')
 
+    #set add columns color
+    _addColumn = getColumn.get_add_columns(srcexcel,tgtexcel,sheetname)
+    if _addColumn is not None:
+        #convert add column name into excel head(A B C D AA...)
+        for i in range(0, len(_addColumn)):
+            _addColumn[i]  = tgtexcel.convert_col2header(sheetname, _addColumn[i])
+        print(_addColumn)
+
+        for _row in _ws.iter_rows():
+            for _cellitem in _row:
+                if _cellitem.column in _addColumn:
+                    _cellitem.fill = PatternFill(fgColor='FF0000', fill_type='solid')
+
     _wb.save(settings.END_FILE_PATH)
 
 
@@ -102,6 +104,6 @@ def test():
     _srcexcel = Excel(_srcpath)
     _tgtexcel = Excel(_tgtpath)
     # getMsgData.get_srcdata_message(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
-    setBgColorIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
+    setBgColorRowIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
 
 test()

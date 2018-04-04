@@ -1,4 +1,3 @@
-from lib.excel import Excel
 from utils import settings
 from lib.logger import StreamFileLogger
 
@@ -16,7 +15,7 @@ def get_match_columns(srcexcel,tgtexcel,sheetname,idx=None):
         for i in _matchcolumn:
             if i in idx:
                 _matchcolumn.remove(i)
-
+    _matchcolumn = filter(None, _matchcolumn)
     _sflogger.info('matched column: {}'.format(_matchcolumn))
 
     return _matchcolumn
@@ -39,6 +38,7 @@ def get_add_columns(srcexcel,tgtexcel,sheetname):
     for _item in _match_columns:
         if _item in _tgtcolumn and _item is not None:
             _tgtcolumn.remove(_item)
+    _tgtcolumn = list(filter(None,_tgtcolumn))
     _sflogger.info('added column: {}'.format(_tgtcolumn))
     return  _tgtcolumn
 
