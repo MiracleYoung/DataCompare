@@ -1,7 +1,7 @@
 import views.delete.getCompareColName as compareData
 from utils import settings
 from lib.logger import StreamFileLogger
-
+from lib.excel import Excel
 _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()
 def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
 
@@ -23,7 +23,19 @@ def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
 
     _cursheet = srcexcel.get_sheet(sheetname)
 
-    for _row in range(2, _cursheet.max_row+1):
+    #get start row number
+    _startNumber = 0
+    for _row in _cursheet.iter_rows():
+        for _cell in _row:
+            if(_cell.value is not None):
+                _startNumber = _cell.row
+                break
+        if(_startNumber != 0):
+            break
+    # real data start from header number + 1
+    _startNumber = _startNumber + 1
+
+    for _row in range(_startNumber, _cursheet.max_row+1):
         _rowdata = []
         for _column in _headername:
             _cellname = "{}{}".format(_column, _row)
@@ -39,8 +51,8 @@ def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
         if _item in _alldata:
             _getcount = _alldata.count(_item)
             _item.append(_getcount)
-    print(_alldata)
-    return _alldata
+
+    return _alldata,_startNumber,10
 
 def get_tgtdata_message(srcexcel,tgtexcel,sheetname,idx=None):
 
@@ -63,7 +75,19 @@ def get_tgtdata_message(srcexcel,tgtexcel,sheetname,idx=None):
 
     _cursheet = tgtexcel.get_sheet(sheetname)
 
-    for _row in range(2, _cursheet.max_row+1):
+    # get start row number
+    _startNumber = 0
+    for _row in _cursheet.iter_rows():
+        for _cell in _row:
+            if (_cell.value is not None):
+                _startNumber = _cell.row
+                break
+        if (_startNumber != 0):
+            break
+     # real data start from header number + 1
+    _startNumber = _startNumber + 1
+
+    for _row in range(_startNumber, _cursheet.max_row):
         _rowdata = []
         for _column in _headername:
             _cellname = "{}{}".format(_column, _row)
@@ -79,16 +103,16 @@ def get_tgtdata_message(srcexcel,tgtexcel,sheetname,idx=None):
         if _item in _alldata:
             _getcount = _alldata.count(_item)
             _item.append(_getcount)
-    return _alldata
+    return _alldata,_startNumber
 
 
 
 def get_compare_colNum(srcexcel,tgtexcel,sheetname,idx):
     _indexCols = idx.split(',')
-
     _srccolumn = srcexcel.get_column_names(sheetname)
+    _srcsheet  = srcexcel.get_sheet(sheetname)
     _tgtcolumn = tgtexcel.get_column_names(sheetname)
-
+    _tgtsheet  = tgtexcel.get_sheet(sheetname)
     #getcompare column position for both sides
     _matchcolumn = []
     for _item in _srccolumn:
@@ -99,14 +123,18 @@ def get_compare_colNum(srcexcel,tgtexcel,sheetname,idx):
             _matchcolumn.remove(_item)
     _sheadnum = []
     _theadnum = []
+    _sflogger.info('get_column_names start1:')
     for _maccol in _matchcolumn:
-        _cursrcshead = srcexcel.convert_col2header(sheetname, _maccol)
+        _cursrcshead = compareData.conver_header(_srcsheet, _maccol)
         _sheadnum.append(_cursrcshead)
+    _sflogger.info('get_column_names start2:')
     for _maccol in _matchcolumn:
-        _curtgtshead = tgtexcel.convert_col2header(sheetname, _maccol)
+        _curtgtshead = compareData.conver_header(_tgtsheet, _maccol)
         _theadnum.append(_curtgtshead)
+    _sflogger.info('get_column_names end:')
     _compareCols = list(zip(_sheadnum, _theadnum))
-    print(_compareCols)
+
+
     #getcompare row position for both sides
     return _compareCols
 
@@ -115,6 +143,12 @@ def get_compare_colNum(srcexcel,tgtexcel,sheetname,idx):
 
 # get_srcdata_message('CAPS Industry KPIs New','Name')
 
-# get_compare_colNum('C:/Users/jliu409/DataCompare/src_data/CAPS.xlsx','CAPS Industry KPIs New')
-
+# def test():
+#     _srcpath = settings.SRC_FILE_PATH
+#     _tgtpath = settings.TGT_FILE_PATH
+#     _srcexcel = Excel(_srcpath)
+#     _tgtexcel = Excel(_tgtpath)
+#     get_srcdata_message(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
+#
+# test()
 

@@ -16,7 +16,7 @@ def get_match_columns(srcexcel,tgtexcel,sheetname,idx=None):
             if i in idx:
                 _matchcolumn.remove(i)
     _matchcolumn = list(filter(None, _matchcolumn))
-    print(_matchcolumn)
+
     _sflogger.info('matched column: {}'.format(_matchcolumn))
 
     return _matchcolumn
@@ -43,7 +43,13 @@ def get_add_columns(srcexcel,tgtexcel,sheetname):
     _sflogger.info('added column: {}'.format(_tgtcolumn))
     return  _tgtcolumn
 
-
+def conver_header(sheet, column_name):
+    for _row in sheet.rows:
+        for _j, _cell in enumerate(_row):
+            if _cell.value.upper() == column_name.upper():
+                return _cell.column
+        break
+    return ''
 
 # get_compare_colNum('CAPS Industry KPIs New',['Name'])
 
