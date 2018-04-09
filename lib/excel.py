@@ -7,7 +7,7 @@
 from openpyxl import load_workbook
 
 from lib.logger import StreamFileLogger
-from utils import settings
+from etc import settings
 
 _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()
 
@@ -46,34 +46,25 @@ class Excel:
 
     def convert_col2header(self, sheetname, column_name):
         _sheet = self.get_sheet(sheetname)
-        for _row in _sheet.rows:
+        for _row in _sheet:
             for _j, _cell in enumerate(_row):
                 if _cell.value.upper() == column_name.upper():
                     return _cell.column
-            break
         return ''
 
     def get_column(self, sheetname, column_name):
         _sheet = self.get_sheet(sheetname)
-        _pos = self.convert_col2header(sheetname, column_name)
-        return _sheet[_pos] if _pos else []
+        _header = self.convert_col2header(sheetname, column_name)
+        yield from _sheet[_header] if _header else []
 
-    def read_excel_by_pos(self, sheetname, start=None, end=None, mapping=None):
+    def read_excel_by_row(self, sheetname, start=None, end=None, mapping=None):
         try:
             [_start, _end] = [start, end] if start and end else self.get_dimensions(sheetname)
             _sheet = self.get_sheet(sheetname)
             _sflogger.debug('Read {}{}{}: starting...'.format(sheetname, _start, _end))
             _columns = self.get_column_names(sheetname, _start, _end, mapping)
-            _sflogger.debug('columns: {}'.format(_columns))
-            _table_raw = _sheet[_start: _end][1:]
-            _ret = []
-            for _i, _row in enumerate(_table_raw):
-                _value = tuple([_v.value for _v in _row])
-                _ret.append(_value)
-                if _i % 100 == 0 and _i != 0:
-                    _sflogger.info('row {}: {}'.format(_i, tuple(_value)))
-            _sflogger.debug('Read complete. Total counts: {}'.format(_i))
-            return _ret
+            _sflogger.debug('Columns: {}'.format(_columns))
+            yield from _sheet[_start: _end][1:]
         except Exception as e:
             _sflogger.error('Execute failed.', exc_info=True)
             return []

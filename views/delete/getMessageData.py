@@ -1,5 +1,5 @@
 import views.delete.getCompareColName as compareData
-from utils import settings
+from etc import settings
 from lib.logger import StreamFileLogger
 from lib.excel import Excel
 _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()

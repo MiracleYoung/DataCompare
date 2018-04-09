@@ -20,15 +20,6 @@ EXCEL_PATH = PROJECT_BASE_DIR / 'src_data'
 # value: [sheetname1, sheetname2, ...]
 
 
-
-SRC_DATA = {
-    # (EXCEL_PATH / 'CAPS.xlsx').as_posix(): ['CAPS Industry KPIs New', ],
-}
-
-TGT_DATA = {
-    # (EXCEL_PATH / 'TGT_CAPS.xlsx').as_posix(): ['CAPS Industry KPIs New', ],
-}
-
 SRC_FILE_PATH = (EXCEL_PATH / 'CAPS.xlsx').as_posix()
 
 TGT_FILE_PATH = (EXCEL_PATH / 'TGT_CAPS.xlsx').as_posix()

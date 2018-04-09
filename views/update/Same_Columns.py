@@ -1,9 +1,6 @@
 from lib.logger import StreamFileLogger
-import openpyxl
-from openpyxl.styles import colors,PatternFill
-from openpyxl import Workbook
 from lib.excel import Excel
-from utils import settings
+from etc import settings
 
 _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()
 

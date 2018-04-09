@@ -1,8 +1,7 @@
 import views.delete.getMessageData as getMsgData
 import views.delete.getCompareColName as getColumn
-from utils import settings
+from etc import settings
 from lib.excel import Excel
-from lib.logger import StreamFileLogger
 from openpyxl.styles import PatternFill
 
 
