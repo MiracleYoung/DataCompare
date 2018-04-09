@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time    : 3/23/18 4:32 PM
+# @Time    : 4/9/18 10:29 AM
 # @Author  : Miracle Young
 # @File    : app.py
 
-from etc import config
+from .test import fn
 
-_c = config.Config()
-
+fn()

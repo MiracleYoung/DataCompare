@@ -9,8 +9,7 @@ import queue
 from sqlalchemy import create_engine
 
 from lib.logger import StreamFileLogger
-from models.v1 import LD_CAPS_KPI2METRIC
-from utils import settings
+from etc import settings
 
 _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()
 

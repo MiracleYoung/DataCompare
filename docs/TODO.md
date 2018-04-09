@@ -17,6 +17,6 @@
     
 - Optimize
     - [ ] Path
-    - [ ] cast raw data to obj
+    - [x] cast raw data to obj
     
     

@@ -7,7 +7,7 @@
 import logging.config
 from functools import wraps
 
-from utils.settings import STREAM_LOG_LEVEL, FILE_LOG_LEVEL
+from etc.settings import STREAM_LOG_LEVEL, FILE_LOG_LEVEL
 
 
 class Logger:

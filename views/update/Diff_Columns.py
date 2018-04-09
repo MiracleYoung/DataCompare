@@ -1,9 +1,7 @@
-from lib.logger import StreamFileLogger
-import openpyxl
-from openpyxl.styles import colors,PatternFill
-from openpyxl import Workbook
+from openpyxl.styles import PatternFill
 from lib.excel import Excel
-from utils import settings
+from etc import settings
+
 
 def read_src_excel(sheetname):
     excel = Excel(settings.SRC_FILE_PATH)
