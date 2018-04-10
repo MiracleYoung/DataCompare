@@ -119,7 +119,8 @@ def test():
     _tgtpath = settings.TGT_FILE_PATH
     _srcexcel = Excel(_srcpath)
     _tgtexcel = Excel(_tgtpath)
-    setBgColorRow(_srcexcel,_tgtexcel,'CAPS Industry KPIs New')
+    setBgColorRowIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
+    # setBgColorRow(_srcexcel, _tgtexcel, 'CAPS Industry KPIs New')
 
 test()
 

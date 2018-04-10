@@ -5,6 +5,7 @@ from lib.excel import Excel
 _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()
 def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
 
+    _cursheet = srcexcel.get_sheet(sheetname)
     #initial index into list
     _headername = []
 
@@ -13,15 +14,15 @@ def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
     if idx is None:
         _mactch_column_name = compareData.get_match_columns(srcexcel,tgtexcel,sheetname)
         for columnname in _mactch_column_name:
-            _curcells = srcexcel.convert_col2header(sheetname,columnname)
+            _curcells = compareData.conver_header(_cursheet,columnname)
             _headername.append(_curcells)
     else:
         _indexCols = idx.split(',')
         for columnname in _indexCols:
-            _curcells = srcexcel.convert_col2header(sheetname, columnname)
+            _curcells = compareData.conver_header(_cursheet, columnname)
             _headername.append(_curcells)
 
-    _cursheet = srcexcel.get_sheet(sheetname)
+
 
     #get start row number
     _startNumber = 0
@@ -35,17 +36,16 @@ def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
     # real data start from header number + 1
     _startNumber = _startNumber + 1
 
-    for _row in range(_startNumber, _cursheet.max_row+1):
+    for _rowNum in range(_startNumber, _cursheet.max_row+1):
         _rowdata = []
         for _column in _headername:
-            _cellname = "{}{}".format(_column, _row)
+            _cellname = "{}{}".format(_column, _rowNum)
             #get current cell line number and line column
 
             _cellvalue = _cursheet[_cellname].value
             _cellvalue = str(_cellvalue).upper()
             _rowdata.append(_cellvalue.strip())
             #upper all values
-
         _alldata.append(_rowdata)
     for _item in _alldata[::-1]:
         if _item in _alldata:
