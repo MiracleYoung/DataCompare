@@ -17,7 +17,7 @@ def get_match_columns(srcexcel,tgtexcel,sheetname,idx=None):
                 _matchcolumn.remove(i)
     _matchcolumn = list(filter(None, _matchcolumn))
 
-    _sflogger.info('matched column: {}'.format(_matchcolumn))
+    # _sflogger.info('matched column: {}'.format(_matchcolumn))
 
     return _matchcolumn
 
@@ -40,7 +40,7 @@ def get_add_columns(srcexcel,tgtexcel,sheetname):
         if _item in _tgtcolumn and _item is not None:
             _tgtcolumn.remove(_item)
     _tgtcolumn = list(filter(None,_tgtcolumn))
-    _sflogger.info('added column: {}'.format(_tgtcolumn))
+    # _sflogger.info('added column: {}'.format(_tgtcolumn))
     return  _tgtcolumn
 
 def conver_header(sheet, column_name):

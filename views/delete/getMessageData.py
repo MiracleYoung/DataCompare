@@ -52,7 +52,7 @@ def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
             _getcount = _alldata.count(_item)
             _item.append(_getcount)
 
-    return _alldata,_startNumber,10
+    return _alldata,_startNumber
 
 def get_tgtdata_message(srcexcel,tgtexcel,sheetname,idx=None):
 
@@ -123,11 +123,11 @@ def get_compare_colNum(srcexcel,tgtexcel,sheetname,idx):
             _matchcolumn.remove(_item)
     _sheadnum = []
     _theadnum = []
-    _sflogger.info('get_column_names start1:')
+    _sflogger.info('get column position start1:')
     for _maccol in _matchcolumn:
         _cursrcshead = compareData.conver_header(_srcsheet, _maccol)
         _sheadnum.append(_cursrcshead)
-    _sflogger.info('get_column_names start2:')
+    _sflogger.info('get column position start2:')
     for _maccol in _matchcolumn:
         _curtgtshead = compareData.conver_header(_tgtsheet, _maccol)
         _theadnum.append(_curtgtshead)
