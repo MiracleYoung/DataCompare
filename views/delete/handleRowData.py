@@ -37,8 +37,9 @@ def get_matchIdx_rowdNum(srcTuple,tgtTuple):
 
 def setBgColorRow(srcexcel,tgtexcel,sheetname):
     _sflogger.info('Compare start:')
-    _srcTuple = getMsgData.get_srcdata_message(srcexcel, tgtexcel, sheetname)
-    _tgtTuple = getMsgData.get_tgtdata_message(srcexcel, tgtexcel, sheetname)
+    _match_column_name = getColumn.get_match_columns(srcexcel, tgtexcel, sheetname)
+    _srcTuple = getMsgData.get_srcdata_message(srcexcel, _match_column_name, sheetname)
+    _tgtTuple = getMsgData.get_tgtdata_message(srcexcel, _match_column_name, sheetname)
     _sflogger.info('Start get different row number:')
     _getrowsNum = get_diff_rowdNum(_srcTuple,_tgtTuple)
     _wb = tgtexcel.get_wb()
@@ -59,8 +60,9 @@ def setBgColorRow(srcexcel,tgtexcel,sheetname):
 def setBgColorRowIdx(srcexcel,tgtexcel,sheetname,idx):
     _sflogger.info('Compare start:')
     #initial getmessage data
-    _srcTuple = getMsgData.get_srcdata_message(srcexcel, tgtexcel, sheetname, idx)
-    _tgtTuple = getMsgData.get_tgtdata_message(srcexcel, tgtexcel, sheetname, idx)
+    _match_column_name = getColumn.get_match_columns(srcexcel,tgtexcel,sheetname,idx)
+    _srcTuple = getMsgData.get_srcdata_message(srcexcel, _match_column_name, sheetname, idx)
+    _tgtTuple = getMsgData.get_tgtdata_message(srcexcel, _match_column_name, sheetname, idx)
 
     _getrowsNum = get_matchIdx_rowdNum(_srcTuple,_tgtTuple)
     _wb = tgtexcel.get_wb()
@@ -119,8 +121,8 @@ def test():
     _tgtpath = settings.TGT_FILE_PATH
     _srcexcel = Excel(_srcpath)
     _tgtexcel = Excel(_tgtpath)
-    setBgColorRowIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
-    # setBgColorRow(_srcexcel, _tgtexcel, 'CAPS Industry KPIs New')
+    #setBgColorRowIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
+    setBgColorRow(_srcexcel, _tgtexcel, 'CAPS Industry KPIs New')
 
 test()
 

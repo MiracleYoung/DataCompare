@@ -3,17 +3,15 @@ from etc import settings
 from lib.logger import StreamFileLogger
 from lib.excel import Excel
 _sflogger = StreamFileLogger(settings.LOG_FILE, __file__).get_logger()
-def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
+def get_srcdata_message(srcexcel,mactch_column_name,sheetname,idx=None):
 
     _cursheet = srcexcel.get_sheet(sheetname)
     #initial index into list
     _headername = []
-
     #store message data
     _alldata = []
     if idx is None:
-        _mactch_column_name = compareData.get_match_columns(srcexcel,tgtexcel,sheetname)
-        for columnname in _mactch_column_name:
+        for columnname in mactch_column_name:
             _curcells = compareData.conver_header(_cursheet,columnname)
             _headername.append(_curcells)
     else:
@@ -21,9 +19,6 @@ def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
         for columnname in _indexCols:
             _curcells = compareData.conver_header(_cursheet, columnname)
             _headername.append(_curcells)
-
-
-
     #get start row number
     _startNumber = 0
     for _row in _cursheet.iter_rows():
@@ -35,7 +30,6 @@ def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
             break
     # real data start from header number + 1
     _startNumber = _startNumber + 1
-
     for _rowNum in range(_startNumber, _cursheet.max_row+1):
         _rowdata = []
         for _column in _headername:
@@ -54,27 +48,23 @@ def get_srcdata_message(srcexcel,tgtexcel,sheetname,idx=None):
 
     return _alldata,_startNumber
 
-def get_tgtdata_message(srcexcel,tgtexcel,sheetname,idx=None):
-
+def get_tgtdata_message(tgtexcel,mactch_column_name,sheetname,idx=None):
+    _cursheet = tgtexcel.get_sheet(sheetname)
     #initial index into list
     _headername = []
 
     #store message data
     _alldata = []
     if idx is None:
-        _mactch_column_name = compareData.get_match_columns(srcexcel,tgtexcel,sheetname)
-        for columnname in _mactch_column_name:
-            _curcells = tgtexcel.convert_col2header(sheetname,columnname)
+        for columnname in mactch_column_name:
+            _curcells = compareData.conver_header(_cursheet,columnname)
             _headername.append(_curcells)
     else:
         _indexCols = idx.split(',')
 
         for columnname in _indexCols:
-            _curcells = tgtexcel.convert_col2header(sheetname, columnname)
+            _curcells = compareData.conver_header(_cursheet, columnname)
             _headername.append(_curcells)
-
-    _cursheet = tgtexcel.get_sheet(sheetname)
-
     # get start row number
     _startNumber = 0
     for _row in _cursheet.iter_rows():
@@ -86,7 +76,6 @@ def get_tgtdata_message(srcexcel,tgtexcel,sheetname,idx=None):
             break
      # real data start from header number + 1
     _startNumber = _startNumber + 1
-
     for _row in range(_startNumber, _cursheet.max_row):
         _rowdata = []
         for _column in _headername:
@@ -97,7 +86,6 @@ def get_tgtdata_message(srcexcel,tgtexcel,sheetname,idx=None):
             _cellvalue = str(_cellvalue).upper()
             _rowdata.append(_cellvalue.strip())
             #upper all values
-
         _alldata.append(_rowdata)
     for _item in _alldata[::-1]:
         if _item in _alldata:
