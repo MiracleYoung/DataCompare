@@ -30,17 +30,21 @@ def get_srcdata_message(srcexcel,mactch_column_name,sheetname,idx=None):
             break
     # real data start from header number + 1
     _startNumber = _startNumber + 1
-    for _rowNum in range(_startNumber, _cursheet.max_row+1):
+    for _rowNum in range(_startNumber, _cursheet.max_row):
         _rowdata = []
         for _column in _headername:
             _cellname = "{}{}".format(_column, _rowNum)
             #get current cell line number and line column
 
             _cellvalue = _cursheet[_cellname].value
-            _cellvalue = str(_cellvalue).upper()
-            _rowdata.append(_cellvalue.strip())
+            if _cellvalue is None:
+                _cellvalue = ''
+            else :
+                _cellvalue = str(_cellvalue).strip().upper()
+            _rowdata.append(_cellvalue)
             #upper all values
         _alldata.append(_rowdata)
+    #get count number for duplicate data
     for _item in _alldata[::-1]:
         if _item in _alldata:
             _getcount = _alldata.count(_item)
@@ -83,10 +87,14 @@ def get_tgtdata_message(tgtexcel,mactch_column_name,sheetname,idx=None):
             #get current cell line number and line column
 
             _cellvalue = _cursheet[_cellname].value
-            _cellvalue = str(_cellvalue).upper()
-            _rowdata.append(_cellvalue.strip())
+            if _cellvalue is None:
+                _cellvalue = ''
+            else :
+                _cellvalue = str(_cellvalue).strip().upper()
+            _rowdata.append(_cellvalue)
             #upper all values
         _alldata.append(_rowdata)
+    # get count number for duplicate data
     for _item in _alldata[::-1]:
         if _item in _alldata:
             _getcount = _alldata.count(_item)

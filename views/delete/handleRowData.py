@@ -39,7 +39,7 @@ def setBgColorRow(srcexcel,tgtexcel,sheetname):
     _sflogger.info('Compare start:')
     _match_column_name = getColumn.get_match_columns(srcexcel, tgtexcel, sheetname)
     _srcTuple = getMsgData.get_srcdata_message(srcexcel, _match_column_name, sheetname)
-    _tgtTuple = getMsgData.get_tgtdata_message(srcexcel, _match_column_name, sheetname)
+    _tgtTuple = getMsgData.get_tgtdata_message(tgtexcel, _match_column_name, sheetname)
     _sflogger.info('Start get different row number:')
     _getrowsNum = get_diff_rowdNum(_srcTuple,_tgtTuple)
     _wb = tgtexcel.get_wb()
@@ -50,6 +50,21 @@ def setBgColorRow(srcexcel,tgtexcel,sheetname):
         if curitem[0].row in _getrowsNum:
             for cell in curitem:
                 cell.fill = PatternFill(fgColor = 'EE7600', fill_type = 'solid')
+
+    _sflogger.info('Start highlight new added column color:')
+    _addColumn = getColumn.get_add_columns(srcexcel, tgtexcel, sheetname)
+    if _addColumn is not None:
+        #convert add column name into excel head(A B C D AA...)
+        for i in range(0, len(_addColumn)):
+            _addColumn[i]  = getColumn.conver_header(_ws, _addColumn[i])
+
+        for _row in _ws.iter_rows():
+            for _cellitem in _row:
+                if _cellitem.column in _addColumn:
+                    _cellitem.fill = PatternFill(fgColor='87CEEB', fill_type='solid')
+
+
+
     _sflogger.info('Finish comparision:')
     try:
         _wb.save(settings.END_FILE_PATH)
@@ -62,7 +77,7 @@ def setBgColorRowIdx(srcexcel,tgtexcel,sheetname,idx):
     #initial getmessage data
     _match_column_name = getColumn.get_match_columns(srcexcel,tgtexcel,sheetname,idx)
     _srcTuple = getMsgData.get_srcdata_message(srcexcel, _match_column_name, sheetname, idx)
-    _tgtTuple = getMsgData.get_tgtdata_message(srcexcel, _match_column_name, sheetname, idx)
+    _tgtTuple = getMsgData.get_tgtdata_message(tgtexcel, _match_column_name, sheetname, idx)
 
     _getrowsNum = get_matchIdx_rowdNum(_srcTuple,_tgtTuple)
     _wb = tgtexcel.get_wb()
@@ -93,13 +108,12 @@ def setBgColorRowIdx(srcexcel,tgtexcel,sheetname,idx):
             for cell in curitem:
                 cell.fill = PatternFill(fgColor = 'EEC900', fill_type = 'solid')
 
-
-    _addColumn = getColumn.get_add_columns(srcexcel,tgtexcel,sheetname)
     _sflogger.info('Start highlight new added column data :')
+    _addColumn = getColumn.get_add_columns(srcexcel, tgtexcel, sheetname)
     if _addColumn is not None:
-        #convert add column name into excel head(A B C D AA...)
+        # convert add column name into excel head(A B C D AA...)
         for i in range(0, len(_addColumn)):
-            _addColumn[i]  = tgtexcel.convert_col2header(sheetname, _addColumn[i])
+            _addColumn[i] = getColumn.conver_header(_ws, _addColumn[i])
 
         for _row in _ws.iter_rows():
             for _cellitem in _row:
@@ -115,14 +129,14 @@ def setBgColorRowIdx(srcexcel,tgtexcel,sheetname,idx):
 
 
 
-
-def test():
-    _srcpath = settings.SRC_FILE_PATH
-    _tgtpath = settings.TGT_FILE_PATH
-    _srcexcel = Excel(_srcpath)
-    _tgtexcel = Excel(_tgtpath)
-    #setBgColorRowIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
-    setBgColorRow(_srcexcel, _tgtexcel, 'CAPS Industry KPIs New')
-
-test()
+#
+# def test():
+#     _srcpath = settings.SRC_FILE_PATH
+#     _tgtpath = settings.TGT_FILE_PATH
+#     _srcexcel = Excel(_srcpath)
+#     _tgtexcel = Excel(_tgtpath)
+#     #setBgColorRowIdx(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
+#     setBgColorRow(_srcexcel, _tgtexcel, 'CAPS Industry KPIs New')
+#
+# test()
 

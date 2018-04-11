@@ -15,7 +15,6 @@ def get_match_columns(srcexcel,tgtexcel,sheetname,idx=None):
         for i in _matchcolumn:
             if i in idx:
                 _matchcolumn.remove(i)
-    _matchcolumn = list(filter(None, _matchcolumn))
 
     # _sflogger.info('matched column: {}'.format(_matchcolumn))
 
@@ -53,10 +52,10 @@ def conver_header(sheet, column_name):
 
 # get_compare_colNum('CAPS Industry KPIs New',['Name'])
 
-def test():
-    _srcpath = settings.SRC_FILE_PATH
-    _tgtpath = settings.TGT_FILE_PATH
-    _srcexcel = Excel(_srcpath)
-    _tgtexcel = Excel(_tgtpath)
+# def test():
+#     _srcpath = settings.SRC_FILE_PATH
+#     _tgtpath = settings.TGT_FILE_PATH
+#     _srcexcel = Excel(_srcpath)
+#     _tgtexcel = Excel(_tgtpath)
     # getMsgData.get_srcdata_message(_srcexcel,_tgtexcel,'CAPS Industry KPIs New','PRIMARY CONTACT_EMAIL')
     # get_del_columns(_srcexcel,_tgtexcel,'CAPS Industry KPIs New')
